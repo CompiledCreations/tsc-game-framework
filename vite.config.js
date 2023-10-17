@@ -1,6 +1,7 @@
+/// <reference types="vitest" />
+import { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import { resolve } from "path";
 
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
@@ -11,5 +12,8 @@ export default defineConfig({
       fileName: "index",
       formats: ["es"],
     },
+  },
+  test: {
+    environment: "jsdom",
   },
 });
