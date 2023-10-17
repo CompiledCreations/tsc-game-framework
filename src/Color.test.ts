@@ -25,3 +25,19 @@ test("cssStyle must return CSS style string", () => {
 
   expect(color.cssStyle()).toBe("rgba(63.75, 127.5, 191.25, 0)");
 });
+
+test("clamp must return color with channel in normal range", () => {
+  const unclampedColor = Color.rgba(255, -128, 0.5, 1.5);
+
+  const color = unclampedColor.clamp();
+
+  // Channels above 1 must be clamped to 1
+  expect(color.r).toBe(1);
+
+  // Channels below 0 must be clamped to 0
+  expect(color.g).toBe(0);
+
+  // Channels in range must be unchanged
+  expect(color.b).toBe(0.5);
+  expect(color.a).toBe(1);
+});

@@ -24,7 +24,7 @@ export class Game {
    */
   public constructor({ renderer }: GameOptions) {
     this.renderer = renderer;
-    this.loop.addUpdateListener(this.tick.bind(this));
+    this.loop.onUpdate.add(this.tick.bind(this));
   }
 
   /**

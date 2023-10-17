@@ -4,7 +4,7 @@ export type UpdateInfo = { dt: number };
 export type UpdateListenerFunction = (args: UpdateInfo) => void;
 
 export class GameLoop {
-  private onUpdate = new Signal<UpdateInfo>();
+  public _onUpdate = new Signal<UpdateInfo>();
   private lastTime = 0;
   private nextFrame = 0;
 
@@ -26,12 +26,8 @@ export class GameLoop {
     this.nextFrame = 0;
   }
 
-  public addUpdateListener(listener: UpdateListenerFunction): void {
-    this.onUpdate.add(listener);
-  }
-
-  public removeUpdateListener(listener: UpdateListenerFunction): void {
-    this.onUpdate.remove(listener);
+  public get onUpdate(): Signal<UpdateInfo> {
+    return this._onUpdate;
   }
 
   private loop(time: number): void {

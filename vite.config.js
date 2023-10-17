@@ -14,6 +14,10 @@ export default defineConfig({
     },
   },
   test: {
+    coverage: {
+      reporter: ["cobertura", "html", "text"],
+      reportsDirectory: "./build/coverage",
+    },
     environment: "jsdom",
   },
 });
