@@ -11,12 +11,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:coverage": "npm run test -- --coverage"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^0.34.6",
+    "jsdom": "^22.1.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
-    "vite-plugin-dts": "^3.6.0"
+    "vite-plugin-dts": "^3.6.0",
+    "vitest": "^0.34.6"
   },
   "dependencies": {
     "micro-signals": "^2.4.0"
