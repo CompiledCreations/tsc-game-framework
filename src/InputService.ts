@@ -1,4 +1,3 @@
-import { GameLoop } from "./GameLoop";
 import { KeyboardService } from "./KeyboardService";
 
 /**
@@ -14,37 +13,46 @@ export class InputService implements KeyboardService {
    *
    * @param loop the game loop to use for updating the input state
    */
-  constructor(private loop: GameLoop = new GameLoop()) {
+  public constructor() {
     window.addEventListener("keydown", (e) => {
       this.keysDown.add(e.key);
-      this.keysJustDown.add(e.key);
+      if (!e.repeat) {
+        this.keysJustDown.add(e.key);
+      }
     });
 
     window.addEventListener("keyup", (e) => {
       this.keysDown.delete(e.key);
       this.keysJustUp.add(e.key);
     });
-
-    this.loop.addUpdateListener(() => {
-      this.keysJustDown.clear();
-      this.keysJustUp.clear();
-    });
   }
 
-  isKeyDown(key: string): boolean {
+  public isKeyDown(key: string): boolean {
     return this.keysDown.has(key);
   }
 
-  isKeyJustDown(key: string): boolean {
+  public isKeyJustDown(key: string): boolean {
     return this.keysJustDown.has(key);
   }
 
-  isKeyJustUp(key: string): boolean {
+  public isKeyJustUp(key: string): boolean {
     return this.keysJustUp.has(key);
   }
 
-  isKeyUp(key: string): boolean {
+  public isKeyUp(key: string): boolean {
     return !this.keysDown.has(key);
+  }
+
+  /**
+   * Update the input state
+   *
+   * This should be called once per frame after the frame completes.
+   *
+   * @internal
+   */
+  public update(): void {
+    this.keysJustDown.clear();
+    this.keysJustUp.clear();
   }
 }
 

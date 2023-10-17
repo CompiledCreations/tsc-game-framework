@@ -1,5 +1,5 @@
 import { ReadableSignal, Signal } from "micro-signals";
-import { GameLoop } from "../src";
+import { GameLoop, Input } from "../src";
 import { UpdateInfo } from "../src/GameLoop";
 import { Renderer } from "./Renderer";
 
@@ -67,6 +67,9 @@ export class Game {
     this.renderer.withState(() => {
       this._onDraw.dispatch({ ...info, renderer: this.renderer });
     });
+
+    // Update the input state after the frame completes. This currently limits us to only having a single Game+Input.
+    Input.update();
   }
 }
 
