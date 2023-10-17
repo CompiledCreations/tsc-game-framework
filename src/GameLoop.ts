@@ -35,7 +35,7 @@ export class GameLoop {
   }
 
   private loop(time: number): void {
-    const deltaTime = time - this.lastTime;
+    const deltaTime = (time - this.lastTime) / 1000.0;
     this.lastTime = time;
 
     this.onUpdate.dispatch({ dt: deltaTime });

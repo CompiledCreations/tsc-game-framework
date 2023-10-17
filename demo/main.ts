@@ -1,4 +1,5 @@
 import { Color, createCanvasGame } from "../src";
+import { Player } from "./Player";
 
 const game = createCanvasGame({
   element: document.getElementById("game")!,
@@ -6,22 +7,19 @@ const game = createCanvasGame({
   height: 480,
 });
 
-let rotation = 0;
+const player = new Player();
+
+// Process input during update
+game.onUpdate.add(({ dt }) => {
+  player.update(dt);
+});
+
+// Render the current state during draw
 game.onDraw.add(({ renderer }) => {
   renderer.fillColor = Color.black;
   renderer.fillRect(0, 0, 640, 480);
 
-  renderer.withState(() => {
-    renderer.translate(320, 240);
-    renderer.rotate(rotation);
-    renderer.fillColor = Color.red;
-    renderer.fillRect(-100, -100, 200, 200);
-  });
-
-  renderer.fillColor = Color.blue;
-  renderer.fillRect(0, 0, 100, 100);
-
-  rotation += 0.01;
+  player.draw(renderer);
 });
 
 game.run();
