@@ -1,5 +1,5 @@
 import { ReadableSignal, Signal } from "micro-signals";
-import { GameLoop } from "../src";
+import { GameLoop, Input } from "../src";
 import { UpdateInfo } from "../src/GameLoop";
 import { Renderer } from "./Renderer";
 
@@ -13,6 +13,7 @@ import { Renderer } from "./Renderer";
  */
 export class Game {
   private readonly _onDraw = new Signal<DrawEvent>();
+  private readonly _onUpdate = new Signal<UpdateEvent>();
   private readonly loop = new GameLoop();
   private readonly renderer: Renderer;
 
@@ -36,6 +37,16 @@ export class Game {
   }
 
   /**
+   * Signal dispatched when the game should be updated
+   *
+   * Clients should listen for this signal and update their game state in response. This is
+   * where input and other game logic should be processed.
+   */
+  public get onUpdate(): ReadableSignal<UpdateInfo> {
+    return this._onUpdate;
+  }
+
+  /**
    * Start running the game loop
    */
   public run() {
@@ -51,9 +62,14 @@ export class Game {
    * @param info the update info from the game loop
    */
   private tick(info: UpdateInfo) {
+    this._onUpdate.dispatch(info);
+
     this.renderer.withState(() => {
       this._onDraw.dispatch({ ...info, renderer: this.renderer });
     });
+
+    // Update the input state after the frame completes. This currently limits us to only having a single Game+Input.
+    Input.update();
   }
 }
 
@@ -73,3 +89,8 @@ export type GameOptions = {
  * The event dispatched when the game should be drawn
  */
 export type DrawEvent = UpdateInfo & { renderer: Renderer };
+
+/**
+ * The event dispatched when the game state should be updated for a frame
+ */
+export type UpdateEvent = UpdateInfo;
