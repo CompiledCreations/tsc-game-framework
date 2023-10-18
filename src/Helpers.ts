@@ -44,6 +44,10 @@ export function createCanvasGame(options: CreateGameOptions) {
     throw new Error("Count not create 2d context");
   }
 
+  // Setup the canvas and context for crisp pixels
+  canvas.style.imageRendering = "pixelated";
+  context.imageSmoothingEnabled = false;
+
   const game = new Game({ renderer: new CanvasRenderer(context) });
 
   return game;

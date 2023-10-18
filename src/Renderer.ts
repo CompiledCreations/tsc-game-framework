@@ -1,10 +1,19 @@
 import { Color } from "./Color";
+import { Texture } from "./Texture";
 
 export interface Renderer {
   /**
    * Color used to fill shapes
    */
   fillColor: Color;
+
+  /**
+   * Draw a texture
+   *
+   * @param texture the texture to draw
+   * @param options controls the texture output
+   */
+  drawTexture(texture: Texture, options: DrawTextureOptions): void;
 
   /**
    * Fill a rectangle with the current fill color
@@ -36,3 +45,60 @@ export interface Renderer {
    */
   translate(x: number, y: number): void;
 }
+
+/**
+ * Options for drawing a texture
+ */
+export type DrawTextureOptions = {
+  /**
+   * The destination x coordinate
+   */
+  dx: number;
+
+  /**
+   * The destination y coordinate
+   */
+  dy: number;
+
+  /**
+   * The destination width
+   *
+   * Defaults to the source width when not specified.
+   */
+  dw?: number;
+
+  /**
+   * The destination height
+   *
+   * Defaults to the source height when not specified.
+   */
+  dh?: number;
+
+  /**
+   * The source x coordinate
+   *
+   * Defaults to 0 when not specified.
+   */
+  sx?: number;
+
+  /**
+   * The source y coordinate
+   *
+   * Defaults to 0 when not specified.
+   */
+  sy?: number;
+
+  /**
+   * The source width
+   *
+   * Defaults to the full texture width minus the sx when not specified.
+   */
+  sw?: number;
+
+  /**
+   * The source height
+   *
+   * Defaults to the full texture height minus the sy when not specified.
+   */
+  sh?: number;
+};

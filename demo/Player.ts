@@ -1,6 +1,9 @@
-import { Color, Input, Renderer } from "../src";
+import { Color, Input, Renderer, Texture } from "../src";
+
+import idle from "./assets/player-idle.png";
 
 export class Player {
+  private spriteSheet = Texture.load(idle);
   private position = { x: 0, y: 0 };
   private velocity = { x: 0, y: 0 };
   private speed = 200;
@@ -29,8 +32,18 @@ export class Player {
   public draw(renderer: Renderer) {
     renderer.withState(() => {
       renderer.translate(this.position.x, this.position.y);
+
       renderer.fillColor = Color.red;
       renderer.fillRect(-16, -16, 32, 32);
+
+      renderer.drawTexture(this.spriteSheet, {
+        sw: 16,
+        sh: 16,
+        dx: -16,
+        dy: -16,
+        dw: 32,
+        dh: 32,
+      });
     });
   }
 }
