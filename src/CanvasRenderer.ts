@@ -1,5 +1,6 @@
 import { Color } from "./Color";
-import { Renderer } from "./Renderer";
+import { DrawTextureOptions, Renderer } from "./Renderer";
+import { Texture } from "./Texture";
 
 /**
  * HTML5 Canvas implementation of Renderer
@@ -15,6 +16,24 @@ export class CanvasRenderer implements Renderer {
    */
   public constructor(context: CanvasRenderingContext2D) {
     this.context = context;
+  }
+
+  public drawTexture(texture: Texture, options: DrawTextureOptions) {
+    if (!texture.isLoaded) {
+      return;
+    }
+
+    const sx = options.sx ?? 0;
+    const sy = options.sy ?? 0;
+    const sw = options.sw ?? texture.image.width - sx;
+    const sh = options.sh ?? texture.image.height - sy;
+
+    const dx = options.dx ?? 0;
+    const dy = options.dy ?? 0;
+    const dw = options.dw ?? sw;
+    const dh = options.dh ?? sh;
+
+    this.context.drawImage(texture.image, sx, sy, sw, sh, dx, dy, dw, dh);
   }
 
   public get fillColor(): Color {
