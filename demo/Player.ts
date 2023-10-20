@@ -4,7 +4,7 @@ import idle from "./assets/player-idle.png";
 
 export class Player {
   private spriteSheet = Texture.load(idle);
-  private position = { x: 0, y: 0 };
+  private position = { x: 320, y: 240 };
   private velocity = { x: 0, y: 0 };
   private speed = 200;
   private gravity = 800;
