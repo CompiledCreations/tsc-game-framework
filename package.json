@@ -12,7 +12,7 @@
     "url": "https://github.com/CompiledCreations/tsc-game-framework.git"
   },
   "publishConfig": {
-    "@compiledcreations:registry": "https://npm.pkg.github.com"
+    "@CompiledCreations:registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "dev": "vite",
