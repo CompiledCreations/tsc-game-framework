@@ -1,5 +1,5 @@
 {
-  "name": "tsc-game-framework",
+  "name": "@compiledcreations/tsc-game-framework",
   "version": "0.0.1",
   "type": "module",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
     "url": "https://github.com/CompiledCreations/tsc-game-framework.git"
   },
   "publishConfig": {
-    "@CompiledCreations:registry": "https://npm.pkg.github.com"
+    "@compiledcreations:registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "dev": "vite",
