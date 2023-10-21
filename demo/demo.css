@@ -1,0 +1,19 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+canvas {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+}

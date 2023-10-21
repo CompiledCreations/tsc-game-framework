@@ -1,5 +1,6 @@
 import { Color, createCanvasGame } from "../src";
 import { Player } from "./Player";
+import "./demo.css";
 
 const game = createCanvasGame({
   element: document.getElementById("game")!,

@@ -12,15 +12,23 @@ export class Player {
 
   public update(dt: number): void {
     this.velocity.x = 0;
-    if (Input.isKeyDown("ArrowLeft")) {
+    if (Input.isKeyDown("ArrowLeft") || Input.gamepad.isButtonDown("Left")) {
       this.velocity.x = -this.speed;
-    } else if (Input.isKeyDown("ArrowRight")) {
+    } else if (
+      Input.isKeyDown("ArrowRight") ||
+      Input.gamepad.isButtonDown("Right")
+    ) {
       this.velocity.x = this.speed;
+    } else {
+      this.velocity.x = Input.gamepad.getAxisValue("LX") * this.speed;
     }
 
     this.velocity.y += this.gravity * dt;
 
-    if (Input.isKeyJustDown("ArrowUp") && this.velocity.y > 0) {
+    if (
+      (Input.isKeyJustDown("ArrowUp") || Input.gamepad.isButtonJustDown("A")) &&
+      this.velocity.y > 0
+    ) {
       this.velocity.y = -400;
     }
 

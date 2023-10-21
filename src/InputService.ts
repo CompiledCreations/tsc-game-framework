@@ -1,47 +1,18 @@
+import { ReadableSignal } from "micro-signals";
+
+import { BrowserInputService } from "./BrowserInputService";
+import { GamepadService } from "./GamepadService";
 import { KeyboardService } from "./KeyboardService";
+import { UpdateInfo } from "./GameLoop";
 
 /**
  * A service for all input-related functionality
  */
-export class InputService implements KeyboardService {
-  private keysDown: Set<string> = new Set();
-  private keysJustDown: Set<string> = new Set();
-  private keysJustUp: Set<string> = new Set();
-
+export interface InputService extends GamepadService, KeyboardService {
   /**
-   * Initialize a new instance of InputService
-   *
-   * @param loop the game loop to use for updating the input state
+   * Signal dispatched when the input state should be updated
    */
-  public constructor() {
-    window.addEventListener("keydown", (e) => {
-      this.keysDown.add(e.key);
-      if (!e.repeat) {
-        this.keysJustDown.add(e.key);
-      }
-    });
-
-    window.addEventListener("keyup", (e) => {
-      this.keysDown.delete(e.key);
-      this.keysJustUp.add(e.key);
-    });
-  }
-
-  public isKeyDown(key: string): boolean {
-    return this.keysDown.has(key);
-  }
-
-  public isKeyJustDown(key: string): boolean {
-    return this.keysJustDown.has(key);
-  }
-
-  public isKeyJustUp(key: string): boolean {
-    return this.keysJustUp.has(key);
-  }
-
-  public isKeyUp(key: string): boolean {
-    return !this.keysDown.has(key);
-  }
+  onUpdate: ReadableSignal<{ dt: number }>;
 
   /**
    * Update the input state
@@ -50,13 +21,10 @@ export class InputService implements KeyboardService {
    *
    * @internal
    */
-  public update(): void {
-    this.keysJustDown.clear();
-    this.keysJustUp.clear();
-  }
+  update(info: UpdateInfo): void;
 }
 
 /**
  * The default input service exported by the library
  */
-export const Input = new InputService();
+export const Input: InputService = new BrowserInputService();
