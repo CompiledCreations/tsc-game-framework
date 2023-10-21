@@ -69,7 +69,7 @@ export class Game {
     });
 
     // Update the input state after the frame completes. This currently limits us to only having a single Game+Input.
-    Input.update();
+    Input.update(info);
   }
 }
 

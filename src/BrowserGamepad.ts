@@ -1,11 +1,26 @@
-import { AxisName, ButtonName, GamepadService } from "./GamepadService";
+import { AxisName, ButtonName, Gamepad } from "./Gamepad";
+import { Input } from "./InputService";
 
-export class BrowserGamepadService implements GamepadService {
+/**
+ * Gamepad implementation for the browser
+ */
+export class BrowserGamepad implements Gamepad {
   private buttonsDown = new Set<ButtonName>();
   private buttonsJustDown = new Set<ButtonName>();
   private buttonsJustUp = new Set<ButtonName>();
 
-  public constructor(private padID: { index: number; id: string }) {}
+  public constructor(private padID: { index: number; id: string }) {
+    const pad = this.pad;
+    console.log(
+      "Gamepad connected at index %d: %s. %d buttons, %d axes.",
+      pad.index,
+      pad.id,
+      pad.buttons.length,
+      pad.axes.length
+    );
+
+    Input.onUpdate.add(this.update.bind(this), this);
+  }
 
   public get id(): string {
     return this.padID.id;
@@ -13,6 +28,10 @@ export class BrowserGamepadService implements GamepadService {
 
   public get index(): number {
     return this.padID.index;
+  }
+
+  public disconnect(): void {
+    Input.onUpdate.remove(this);
   }
 
   public isButtonDown(button: ButtonName): boolean {
@@ -40,7 +59,7 @@ export class BrowserGamepadService implements GamepadService {
     return rawValue;
   }
 
-  public update(): void {
+  private update(): void {
     const pad = this.pad;
 
     this.buttonsJustDown.clear();
@@ -60,11 +79,14 @@ export class BrowserGamepadService implements GamepadService {
     }
   }
 
-  private get pad(): Gamepad {
+  private get pad(): globalThis.Gamepad {
     return navigator.getGamepads()[this.padID!.index]!;
   }
 }
 
+/**
+ * Maps button names to their index in the Gamepad.buttons array
+ */
 const buttons = new Map<ButtonName, number>([
   ["A", 0],
   ["B", 1],
@@ -85,10 +107,17 @@ const buttons = new Map<ButtonName, number>([
   ["Home", 16],
 ]);
 
-const deadZone = 0.1;
+/**
+ * Maps axis names to their index in the Gamepad.axes array
+ */
 const axes = new Map<AxisName, number>([
   ["LX", 0],
   ["LY", 1],
   ["RX", 2],
   ["RY", 3],
 ]);
+
+/**
+ * Dead zone for analog sticks
+ */
+const deadZone = 0.1;

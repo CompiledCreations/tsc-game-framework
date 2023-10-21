@@ -1,32 +1,46 @@
-export const axisNames = ["LX", "LY", "RX", "RY"] as const;
-export const buttonNames = [
-  "A",
-  "B",
-  "X",
-  "Y",
-  "LB",
-  "RB",
-  "LT",
-  "RT",
-  "Back",
-  "Start",
-  "LS",
-  "RS",
-  "Up",
-  "Down",
-  "Left",
-  "Right",
-  "Home",
-] as const;
+import { Gamepad } from "./Gamepad";
 
-export type AxisName = (typeof axisNames)[number];
-export type ButtonName = (typeof buttonNames)[number];
-
+/**
+ * Manages the gamepads connected to the system
+ *
+ * This includes a main gamepad which is the primary gamepad used for input.
+ */
 export interface GamepadService {
-  isButtonDown(button: ButtonName): boolean;
-  isButtonJustDown(button: ButtonName): boolean;
-  isButtonJustUp(button: ButtonName): boolean;
-  isButtonUp(button: ButtonName): boolean;
+  /**
+   * The main gamepad
+   *
+   * Can be set with `setMainGamepad` if necessary
+   */
+  readonly gamepad: Gamepad;
 
-  getAxisValue(axis: AxisName): number;
+  /**
+   * Add a gamepad to the list of connected gamepads
+   *
+   * @param gamepad the gamepad to add
+   */
+  addGamepad(gamepad: Gamepad): void;
+
+  /**
+   * Remove a previously added gamepad
+   *
+   * @param id the id of the gamepad to remove
+   */
+  removeGamepad(id: string): void;
+
+  /**
+   * Get the list of connected gamepads
+   */
+  getGamepads(): Gamepad[];
+
+  /**
+   * Get a gamepad by its id
+   *
+   * @param id the id of the gamepad
+   */
+  getGamepad(id: string): Gamepad;
+
+  /**
+   * Set the main gamepad, can be retrieved through the `gamepad` property
+   */
+  setMainGamepad(id: string): void;
 }
