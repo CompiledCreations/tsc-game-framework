@@ -1,6 +1,7 @@
 import { ReadableSignal, Signal } from "micro-signals";
-import { GameLoop, Input } from "../src";
-import { UpdateInfo } from "../src/GameLoop";
+
+import { GameLoop, UpdateInfo } from "./GameLoop";
+import { Input } from "./InputService";
 import { Renderer } from "./Renderer";
 
 /**
