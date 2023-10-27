@@ -16,6 +16,7 @@ export class CanvasRenderer implements Renderer {
    */
   public constructor(context: CanvasRenderingContext2D) {
     this.context = context;
+    this.context.font = "16px sans-serif";
   }
 
   public drawTexture(texture: Texture, options: DrawTextureOptions) {
@@ -47,6 +48,10 @@ export class CanvasRenderer implements Renderer {
 
   public fillRect(x: number, y: number, width: number, height: number): void {
     this.context.fillRect(x, y, width, height);
+  }
+
+  public fillText(text: string, x: number, y: number): void {
+    this.context.fillText(text, x, y);
   }
 
   public save(): void {

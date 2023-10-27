@@ -19,6 +19,14 @@ export interface CreateGameOptions {
    * The height of the game canvas
    */
   height: number;
+
+  /**
+   * Controls the scaling of the canvas in the parent element
+   *
+   * - `"stretch"`: stretch the canvas to fill the parent element while maintaining aspect ratio
+   * - `number`: scale the canvas by the given fixed amount, useful if you want a fixed size with a pixellated look. At 1x the visible canvas will be the same size as the canvas not the size based on the system DPI.
+   */
+  scale?: number | "stretch";
 }
 
 /**
@@ -31,15 +39,23 @@ export interface CreateGameOptions {
  * @returns a game that renders to a canvas
  */
 export function createCanvasGame(options: CreateGameOptions) {
-  const { element, width, height } = options;
+  const { element, scale = 1, width, height } = options;
+
   const canvas = document.createElement("canvas");
+  element.appendChild(canvas);
   canvas.width = width;
   canvas.height = height;
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
-  element.appendChild(canvas);
 
-  const context = canvas.getContext("2d");
+  if (scale === "stretch") {
+    setUpStretch(canvas);
+  } else {
+    // Scale it so that it looks good on high DPI screens
+    const physicalPixelScale = (1 / window.devicePixelRatio) * scale;
+    canvas.style.width = `${width * physicalPixelScale}px`;
+    canvas.style.height = `${height * physicalPixelScale}px`;
+  }
+
+  const context = canvas.getContext("2d", { alpha: false });
   if (!context) {
     throw new Error("Count not create 2d context");
   }
@@ -47,8 +63,51 @@ export function createCanvasGame(options: CreateGameOptions) {
   // Setup the canvas and context for crisp pixels
   canvas.style.imageRendering = "pixelated";
   context.imageSmoothingEnabled = false;
-
   const game = new Game({ renderer: new CanvasRenderer(context) });
 
   return game;
+}
+
+/**
+ * Set up a canvas so it stretches to fill its parent element while maintaining aspect ratio
+ *
+ * @param canvas the canvas to setup
+ */
+function setUpStretch(canvas: HTMLCanvasElement) {
+  const { width, height, parentElement } = canvas;
+  if (!parentElement) {
+    throw new Error("Canvas must have a parent element");
+  }
+
+  const aspectRatio = width / height;
+
+  // Use a resize observer to resize the canvas when the element is resized
+  const resizeObserver = new ResizeObserver((entries) => {
+    const { width, height } = entries[0].contentRect;
+    if (width / height < aspectRatio) {
+      canvas.style.width = "100%";
+      canvas.style.height = "auto";
+    } else {
+      canvas.style.width = "auto";
+      canvas.style.height = "100%";
+    }
+  });
+  resizeObserver.observe(parentElement);
+
+  // Stop observing when our canvas is removed from the DOM
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === "childList") {
+        for (const removedNode of mutation.removedNodes) {
+          if (removedNode === canvas) {
+            resizeObserver.disconnect();
+            observer.disconnect();
+            return;
+          }
+        }
+      }
+    }
+  });
+
+  observer.observe(parentElement, { childList: true });
 }
