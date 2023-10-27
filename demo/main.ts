@@ -6,6 +6,7 @@ const game = createCanvasGame({
   element: document.getElementById("game")!,
   width: 640,
   height: 480,
+  scale: 2,
 });
 
 const player = new Player();
@@ -19,6 +20,9 @@ game.onUpdate.add(({ dt }) => {
 game.onDraw.add(({ renderer }) => {
   renderer.fillColor = Color.black;
   renderer.fillRect(0, 0, 640, 480);
+
+  renderer.fillColor = Color.white;
+  renderer.fillText("Hello, World!", 10, 15);
 
   player.draw(renderer);
 });

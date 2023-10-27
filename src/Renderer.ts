@@ -21,6 +21,11 @@ export interface Renderer {
   fillRect(x: number, y: number, width: number, height: number): void;
 
   /**
+   * Fill a text string with the current fill color
+   */
+  fillText(text: string, x: number, y: number): void;
+
+  /**
    * Save the current state of the renderer
    */
   save(): void;
