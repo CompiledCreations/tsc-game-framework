@@ -10,6 +10,23 @@ Repeat, this is not a "Game Engine". This is a small library to kickstart game d
 
 Don't try and use this yet. It's in the very early stages of development. There's not even a published package yet!
 
+## Install
+
+Add the @compiledcreations registry and authenticate with a github personal access token that has permissions to read packages. This will be required until the package is published to the public npm registry.
+
+To do this add the following to the .npmrc file in your user folder, not the root of your package.
+
+```bash
+//npm.pkg.github.com/:_authToken=ACCESS_TOKEN_HERE
+@compiledcreations:registry=https://npm.pkg.github.com
+```
+
+Then install the package as usual.
+
+```bash
+npm install @compiledcreations/tsc-game-framework
+```
+
 ## Getting Started
 
 ```typescript

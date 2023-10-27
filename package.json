@@ -1,13 +1,13 @@
 {
-  "name": "tsc-game-framework",
-  "private": true,
-  "version": "0.0.1",
+  "name": "@compiledcreations/tsc-game-framework",
+  "version": "0.0.1-alpha2",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "repository": "https://github.com/CompiledCreations/tsc-game-framework.git",
   "publishConfig": {
     "@compiledcreations:registry": "https://npm.pkg.github.com"
   },
