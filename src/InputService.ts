@@ -4,11 +4,15 @@ import { BrowserInputService } from "./BrowserInputService";
 import { GamepadService } from "./GamepadService";
 import { KeyboardService } from "./KeyboardService";
 import { UpdateInfo } from "./GameLoop";
+import { MouseService } from "./MouseService";
 
 /**
  * A service for all input-related functionality
  */
-export interface InputService extends GamepadService, KeyboardService {
+export interface InputService
+  extends GamepadService,
+    KeyboardService,
+    MouseService {
   /**
    * Signal dispatched when the input state should be updated
    */

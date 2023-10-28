@@ -1,5 +1,7 @@
+import { BrowserMouseService } from "./BrowserMouseService";
 import { CanvasRenderer } from "./CanvasRenderer";
 import { Game } from "./Game";
+import { MouseService } from "./MouseService";
 
 /**
  * Options for creating a game
@@ -63,7 +65,9 @@ export function createCanvasGame(options: CreateGameOptions) {
   // Setup the canvas and context for crisp pixels
   canvas.style.imageRendering = "pixelated";
   context.imageSmoothingEnabled = false;
+
   const game = new Game({ renderer: new CanvasRenderer(context) });
+  game.services.add(MouseService, new BrowserMouseService(canvas));
 
   return game;
 }

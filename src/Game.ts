@@ -3,6 +3,7 @@ import { ReadableSignal, Signal } from "micro-signals";
 import { GameLoop, UpdateInfo } from "./GameLoop";
 import { Input } from "./InputService";
 import { Renderer } from "./Renderer";
+import { GameServiceManager } from "./ServiceManager";
 
 /**
  * Game application class
@@ -13,6 +14,8 @@ import { Renderer } from "./Renderer";
  * their behavior.
  */
 export class Game {
+  public readonly services = new GameServiceManager();
+
   private readonly _onDraw = new Signal<DrawEvent>();
   private readonly _onUpdate = new Signal<UpdateEvent>();
   private readonly loop = new GameLoop();

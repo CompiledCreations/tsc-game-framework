@@ -1,16 +1,18 @@
 import { ReadableSignal, Signal } from "micro-signals";
 
 import { BrowserGamepad } from "./BrowserGamepad";
-import { Gamepad } from "./Gamepad";
-import { VirtualGamepad } from "./VirtualGamepad";
 import { UpdateInfo } from "./GameLoop";
+import { Gamepad } from "./Gamepad";
 import { InputService } from "./InputService";
+import { Mouse } from "./Mouse";
+import { VirtualGamepad } from "./VirtualGamepad";
 
 export class BrowserInputService implements InputService {
   private _onUpdate = new Signal<{ dt: number }>();
 
   private _gamepad: Gamepad;
   private _gamepads = new Map<string, Gamepad>();
+  private _mouse: Mouse = { x: 0, y: 0 };
 
   private keysDown = new Set<string>();
   private keysJustDown = new Set<string>();
@@ -51,6 +53,10 @@ export class BrowserInputService implements InputService {
     window.addEventListener("gamepaddisconnected", (e) => {
       this.removeGamepad(e.gamepad.id);
     });
+  }
+
+  public get mouse(): Mouse {
+    return this._mouse;
   }
 
   public get onUpdate(): ReadableSignal<{ dt: number }> {
