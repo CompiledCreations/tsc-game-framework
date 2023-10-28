@@ -1,5 +1,5 @@
+import { GameLoop } from "./GameLoop";
 import { AxisName, ButtonName, Gamepad } from "./Gamepad";
-import { Input } from "./InputService";
 
 /**
  * Gamepad implementation for the browser
@@ -9,7 +9,10 @@ export class BrowserGamepad implements Gamepad {
   private buttonsJustDown = new Set<ButtonName>();
   private buttonsJustUp = new Set<ButtonName>();
 
-  public constructor(private padID: { index: number; id: string }) {
+  public constructor(
+    private padID: { index: number; id: string },
+    private loop: GameLoop
+  ) {
     const pad = this.pad;
     console.log(
       "Gamepad connected at index %d: %s. %d buttons, %d axes.",
@@ -19,7 +22,7 @@ export class BrowserGamepad implements Gamepad {
       pad.axes.length
     );
 
-    Input.onUpdate.add(this.update.bind(this), this);
+    this.loop.onFrameEnd.add(this.update.bind(this), this);
   }
 
   public get id(): string {
@@ -31,7 +34,7 @@ export class BrowserGamepad implements Gamepad {
   }
 
   public disconnect(): void {
-    Input.onUpdate.remove(this);
+    this.loop.onUpdate.remove(this);
   }
 
   public isButtonDown(button: ButtonName): boolean {

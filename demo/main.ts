@@ -4,6 +4,8 @@ import { Color, createCanvasGame } from "../src";
 import { Player } from "./Player";
 import "./demo.css";
 import { MouseService } from "../src/MouseService";
+import { KeyboardService } from "../src/KeyboardService";
+import { GamepadService } from "../src/GamepadService";
 
 const game = createCanvasGame({
   element: document.getElementById("game")!,
@@ -18,7 +20,10 @@ const debugOverlay = () => {
   return html`<div>${mouse.x}, ${mouse.y}</div>`;
 };
 
-const player = new Player();
+const player = new Player(
+  game.services.get(GamepadService),
+  game.services.get(KeyboardService)
+);
 
 // Process input during update
 game.onUpdate.add(({ dt }) => {

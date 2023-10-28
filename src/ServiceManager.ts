@@ -1,11 +1,11 @@
-interface ServiceManager {
+export interface ServiceManager {
   /**
    * Add a service
    *
    * @param s the symbol used to lookup the service
    * @param service the service to add
    */
-  add(s: symbol, service: {}): void;
+  add(s: string | symbol, service: {}): void;
 
   /**
    * Get a service
@@ -13,11 +13,11 @@ interface ServiceManager {
    * @param s the symbol used to lookup the service
    * @returns the service
    */
-  get<T extends {}>(s: symbol): T;
+  get<T extends {}>(s: string | symbol): T;
 }
 
 class ServiceManagerInternal implements ServiceManager {
-  private services = new Map<symbol, {}>();
+  private services = new Map<string | symbol, {}>();
 
   /**
    * Add a service
@@ -25,7 +25,7 @@ class ServiceManagerInternal implements ServiceManager {
    * @param s the symbol used to lookup the service
    * @param service the service to add
    */
-  public add(s: symbol, service: {}): void {
+  public add(s: string | symbol, service: {}): void {
     this.services.set(s, service);
   }
 
@@ -35,7 +35,7 @@ class ServiceManagerInternal implements ServiceManager {
    * @param s the symbol used to lookup the service
    * @returns the service
    */
-  public get<T extends {}>(s: symbol): T {
+  public get<T extends {}>(s: string | symbol): T {
     const service = this.services.get(s);
     if (!service) {
       throw new Error(`Service ${s.toString()} not found`);

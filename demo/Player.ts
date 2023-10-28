@@ -1,4 +1,6 @@
-import { Color, Input, Renderer, Texture } from "../src";
+import { Color, Renderer, Texture } from "../src";
+import { GamepadService } from "../src/GamepadService";
+import { KeyboardService } from "../src/KeyboardService";
 
 import idle from "./assets/player-idle.png";
 
@@ -10,23 +12,31 @@ export class Player {
   private gravity = 800;
   private floorPosition = 400;
 
+  public constructor(
+    private readonly gamepads: GamepadService,
+    private readonly keyboard: KeyboardService
+  ) {}
+
   public update(dt: number): void {
+    const gamepad = this.gamepads.gamepad;
+    const keyboard = this.keyboard;
+
     this.velocity.x = 0;
-    if (Input.isKeyDown("ArrowLeft") || Input.gamepad.isButtonDown("Left")) {
+    if (keyboard.isKeyDown("ArrowLeft") || gamepad.isButtonDown("Left")) {
       this.velocity.x = -this.speed;
     } else if (
-      Input.isKeyDown("ArrowRight") ||
-      Input.gamepad.isButtonDown("Right")
+      keyboard.isKeyDown("ArrowRight") ||
+      gamepad.isButtonDown("Right")
     ) {
       this.velocity.x = this.speed;
     } else {
-      this.velocity.x = Input.gamepad.getAxisValue("LX") * this.speed;
+      this.velocity.x = gamepad.getAxisValue("LX") * this.speed;
     }
 
     this.velocity.y += this.gravity * dt;
 
     if (
-      (Input.isKeyJustDown("ArrowUp") || Input.gamepad.isButtonJustDown("A")) &&
+      (keyboard.isKeyJustDown("ArrowUp") || gamepad.isButtonJustDown("A")) &&
       this.velocity.y > 0
     ) {
       this.velocity.y = -400;

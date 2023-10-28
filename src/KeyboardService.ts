@@ -32,4 +32,7 @@ export interface KeyboardService {
   isKeyUp(key: string): boolean;
 }
 
+/**
+ * Symbol used to lookup the KeyboardService
+ */
 export const KeyboardService = Symbol("KeyboardService");

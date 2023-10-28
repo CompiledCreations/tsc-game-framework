@@ -1,7 +1,14 @@
+import { BrowserGameLoop } from "./BrowserGameLoop";
+import { BrowserGamepadService } from "./BrowserGamepadService";
+import { BrowserKeyboardService } from "./BrowserKeyboardService";
 import { BrowserMouseService } from "./BrowserMouseService";
 import { CanvasRenderer } from "./CanvasRenderer";
 import { Game } from "./Game";
+import { GameLoop } from "./GameLoop";
+import { GamepadService } from "./GamepadService";
+import { KeyboardService } from "./KeyboardService";
 import { MouseService } from "./MouseService";
+import { GameServiceManager } from "./ServiceManager";
 
 /**
  * Options for creating a game
@@ -66,8 +73,14 @@ export function createCanvasGame(options: CreateGameOptions) {
   canvas.style.imageRendering = "pixelated";
   context.imageSmoothingEnabled = false;
 
-  const game = new Game({ renderer: new CanvasRenderer(context) });
-  game.services.add(MouseService, new BrowserMouseService(canvas));
+  const loop = new BrowserGameLoop();
+  const services = new GameServiceManager();
+  services.add(GameLoop, loop);
+  services.add(MouseService, new BrowserMouseService(canvas));
+  services.add(GamepadService, new BrowserGamepadService(loop));
+  services.add(KeyboardService, new BrowserKeyboardService(loop));
+
+  const game = new Game({ renderer: new CanvasRenderer(context), services });
 
   return game;
 }
