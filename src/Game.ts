@@ -67,10 +67,10 @@ export class Game {
    * @param info the update info from the game loop
    */
   private tick(info: UpdateInfo) {
-    this._onUpdate.dispatch(info);
+    this._onUpdate.dispatch({ ...info, game: this });
 
     this.renderer.withState(() => {
-      this._onDraw.dispatch({ ...info, renderer: this.renderer });
+      this._onDraw.dispatch({ ...info, game: this, renderer: this.renderer });
     });
   }
 }
@@ -93,11 +93,16 @@ export type GameOptions = {
 };
 
 /**
+ * The base of all game events, provide access to the game instance
+ */
+export type GameEvent = { game: Game };
+
+/**
  * The event dispatched when the game should be drawn
  */
-export type DrawEvent = UpdateInfo & { renderer: Renderer };
+export type DrawEvent = GameEvent & UpdateInfo & { renderer: Renderer };
 
 /**
  * The event dispatched when the game state should be updated for a frame
  */
-export type UpdateEvent = UpdateInfo;
+export type UpdateEvent = GameEvent & UpdateInfo;
