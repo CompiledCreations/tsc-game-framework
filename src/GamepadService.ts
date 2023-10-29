@@ -44,3 +44,8 @@ export interface GamepadService {
    */
   setMainGamepad(id: string): void;
 }
+
+/**
+ * Symbol used to lookup the GamepadService
+ */
+export const GamepadService = Symbol("GamepadService");

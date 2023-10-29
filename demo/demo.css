@@ -11,6 +11,12 @@ body {
   background-color: white;
 }
 
+#debug {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 #game {
   width: 100%;
   height: 100%;

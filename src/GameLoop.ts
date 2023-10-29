@@ -1,40 +1,43 @@
-import { Signal } from "micro-signals";
+import { ReadableSignal } from "micro-signals";
 
 export type UpdateInfo = { dt: number };
 export type UpdateListenerFunction = (args: UpdateInfo) => void;
 
-export class GameLoop {
-  public _onUpdate = new Signal<UpdateInfo>();
-  private lastTime = 0;
-  private nextFrame = 0;
+/**
+ * Game loop represents a continuous loop. To use it, you must register listeners to its signals.
+ */
+export interface GameLoop {
+  /**
+   * Whether the game loop is running or not
+   */
+  isRunning: boolean;
 
-  public constructor() {
-    this.loop = this.loop.bind(this);
-  }
+  /**
+   * Signal emitted during the update phase of the game loop
+   *
+   * This is the main update phase of the loop. It is when game logic and rendering should be executed.
+   */
+  onUpdate: ReadableSignal<UpdateInfo>;
 
-  public get isRunning(): boolean {
-    return this.nextFrame !== 0;
-  }
+  /**
+   * Signal emitted after the update phase of the game loop
+   *
+   * This is useful for doing clean up required after game logic has been executed.
+   */
+  onFrameEnd: ReadableSignal<void>;
 
-  public start(): void {
-    this.lastTime = 0;
-    this.nextFrame = window.requestAnimationFrame(this.loop);
-  }
+  /**
+   * Start the game loop
+   */
+  start(): void;
 
-  public stop(): void {
-    window.cancelAnimationFrame(this.nextFrame);
-    this.nextFrame = 0;
-  }
-
-  public get onUpdate(): Signal<UpdateInfo> {
-    return this._onUpdate;
-  }
-
-  private loop(time: number): void {
-    const deltaTime = (time - this.lastTime) / 1000.0;
-    this.lastTime = time;
-
-    this.onUpdate.dispatch({ dt: deltaTime });
-    this.nextFrame = window.requestAnimationFrame(this.loop);
-  }
+  /**
+   * Stop the game loop
+   */
+  stop(): void;
 }
+
+/**
+ * Symbol used for looking up the GameLoop
+ */
+export const GameLoop = Symbol("GameLoop");

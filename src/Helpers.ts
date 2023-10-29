@@ -1,5 +1,14 @@
+import { BrowserGameLoop } from "./BrowserGameLoop";
+import { BrowserGamepadService } from "./BrowserGamepadService";
+import { BrowserKeyboardService } from "./BrowserKeyboardService";
+import { BrowserMouseService } from "./BrowserMouseService";
 import { CanvasRenderer } from "./CanvasRenderer";
 import { Game } from "./Game";
+import { GameLoop } from "./GameLoop";
+import { GameServiceManager } from "./GameServiceManager";
+import { GamepadService } from "./GamepadService";
+import { KeyboardService } from "./KeyboardService";
+import { MouseService } from "./MouseService";
 
 /**
  * Options for creating a game
@@ -63,9 +72,34 @@ export function createCanvasGame(options: CreateGameOptions) {
   // Setup the canvas and context for crisp pixels
   canvas.style.imageRendering = "pixelated";
   context.imageSmoothingEnabled = false;
-  const game = new Game({ renderer: new CanvasRenderer(context) });
+
+  // Create the game with a renderer and services for the browser
+  const renderer = new CanvasRenderer(context);
+  const services = createBrowserServices(canvas);
+  const game = new Game({ renderer, services });
 
   return game;
+}
+
+/**
+ * Create the services for a browser based game
+ *
+ * @param canvas the canvas that represents the game in the DOM
+ * @returns services for a canvas based game
+ */
+function createBrowserServices(canvas: HTMLCanvasElement) {
+  const services = new GameServiceManager();
+
+  // Create the game loop first so that it can be used by other services
+  const loop = new BrowserGameLoop();
+  services.add(GameLoop, loop);
+
+  // Create input services
+  services.add(MouseService, new BrowserMouseService(canvas, loop));
+  services.add(GamepadService, new BrowserGamepadService(loop));
+  services.add(KeyboardService, new BrowserKeyboardService(loop));
+
+  return services;
 }
 
 /**

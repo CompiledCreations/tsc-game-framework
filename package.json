@@ -1,6 +1,6 @@
 {
   "name": "@compiledcreations/tsc-game-framework",
-  "version": "0.0.1-alpha2",
+  "version": "0.0.1-alpha3",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,6 +27,7 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
+    "lit-html": "^3.0.1",
     "micro-signals": "^2.4.0"
   }
 }
