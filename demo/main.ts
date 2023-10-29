@@ -17,12 +17,15 @@ const game = createCanvasGame({
 const debug = document.getElementById("debug")!;
 const debugOverlay = () => {
   const mouse = game.services.get<MouseService>(MouseService).mouse;
-  return html`<div>${mouse.x}, ${mouse.y}</div>`;
+  return html`<div>
+    ${mouse.x}, ${mouse.y} (${mouse.isButtonDown("Left") ? "Down" : "Up"})
+  </div>`;
 };
 
 const player = new Player(
   game.services.get(GamepadService),
-  game.services.get(KeyboardService)
+  game.services.get(KeyboardService),
+  game.services.get(MouseService)
 );
 
 // Process input during update

@@ -1,4 +1,4 @@
-import { Color, Renderer, Texture } from "../src";
+import { Color, Mouse, MouseService, Renderer, Texture } from "../src";
 import { GamepadService } from "../src/GamepadService";
 import { KeyboardService } from "../src/KeyboardService";
 
@@ -14,12 +14,14 @@ export class Player {
 
   public constructor(
     private readonly gamepads: GamepadService,
-    private readonly keyboard: KeyboardService
+    private readonly keyboard: KeyboardService,
+    private readonly mouse: MouseService
   ) {}
 
   public update(dt: number): void {
     const gamepad = this.gamepads.gamepad;
     const keyboard = this.keyboard;
+    const mouse = this.mouse.mouse;
 
     this.velocity.x = 0;
     if (keyboard.isKeyDown("ArrowLeft") || gamepad.isButtonDown("Left")) {
@@ -36,7 +38,9 @@ export class Player {
     this.velocity.y += this.gravity * dt;
 
     if (
-      (keyboard.isKeyJustDown("ArrowUp") || gamepad.isButtonJustDown("A")) &&
+      (keyboard.isKeyJustDown("ArrowUp") ||
+        gamepad.isButtonJustDown("A") ||
+        mouse.isButtonJustDown("Left")) &&
       this.velocity.y > 0
     ) {
       this.velocity.y = -400;

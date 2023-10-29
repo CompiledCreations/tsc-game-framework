@@ -95,7 +95,7 @@ function createBrowserServices(canvas: HTMLCanvasElement) {
   services.add(GameLoop, loop);
 
   // Create input services
-  services.add(MouseService, new BrowserMouseService(canvas));
+  services.add(MouseService, new BrowserMouseService(canvas, loop));
   services.add(GamepadService, new BrowserGamepadService(loop));
   services.add(KeyboardService, new BrowserKeyboardService(loop));
 

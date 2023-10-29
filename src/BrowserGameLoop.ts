@@ -1,6 +1,9 @@
 import { ReadableSignal, Signal } from "micro-signals";
 import { GameLoop, UpdateInfo } from "./GameLoop";
 
+/**
+ * A game loop that uses requestAnimationFrame
+ */
 export class BrowserGameLoop implements GameLoop {
   private _onUpdate = new Signal<UpdateInfo>();
   private _onFrameComplete = new Signal<void>();
