@@ -1,6 +1,11 @@
-import { Color, MouseService, Renderer, Texture } from "../src";
-import { GamepadService } from "../src/GamepadService";
-import { KeyboardService } from "../src/KeyboardService";
+import {
+  Color,
+  GamepadService,
+  KeyboardService,
+  MouseService,
+  Renderer,
+  Texture,
+} from "../src";
 
 import idle from "./assets/player-idle.png";
 
