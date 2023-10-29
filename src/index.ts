@@ -5,7 +5,6 @@ export * from "./Gamepad";
 export * from "./GamepadService";
 export * from "./Helpers";
 export * from "./KeyboardService";
-export * from "./Mouse";
 export * from "./MouseService";
 export * from "./Renderer";
 export * from "./ServiceManager";

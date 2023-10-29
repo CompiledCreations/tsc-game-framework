@@ -1,4 +1,4 @@
-import { Color, Mouse, MouseService, Renderer, Texture } from "../src";
+import { Color, MouseService, Renderer, Texture } from "../src";
 import { GamepadService } from "../src/GamepadService";
 import { KeyboardService } from "../src/KeyboardService";
 
@@ -21,7 +21,7 @@ export class Player {
   public update(dt: number): void {
     const gamepad = this.gamepads.gamepad;
     const keyboard = this.keyboard;
-    const mouse = this.mouse.mouse;
+    const mouse = this.mouse;
 
     this.velocity.x = 0;
     if (keyboard.isKeyDown("ArrowLeft") || gamepad.isButtonDown("Left")) {

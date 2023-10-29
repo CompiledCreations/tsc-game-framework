@@ -1,11 +1,11 @@
 import { html, render } from "lit-html";
 
 import { Color, createCanvasGame } from "../src";
+import { GamepadService } from "../src/GamepadService";
+import { KeyboardService } from "../src/KeyboardService";
+import { MouseService } from "../src/MouseService";
 import { Player } from "./Player";
 import "./demo.css";
-import { MouseService } from "../src/MouseService";
-import { KeyboardService } from "../src/KeyboardService";
-import { GamepadService } from "../src/GamepadService";
 
 const game = createCanvasGame({
   element: document.getElementById("game")!,
@@ -16,7 +16,7 @@ const game = createCanvasGame({
 
 const debug = document.getElementById("debug")!;
 const debugOverlay = () => {
-  const mouse = game.services.get<MouseService>(MouseService).mouse;
+  const mouse = game.services.get<MouseService>(MouseService);
   return html`<div>
     ${mouse.x}, ${mouse.y} (${mouse.isButtonDown("Left") ? "Down" : "Up"})
   </div>`;
